@@ -14,13 +14,14 @@ byte off = 0x00;
 
 int place = 0;
 
-int rowControl[6][8] = { { 1, 0, 0, 0, 0, 0, 0, 0 },
-                         { 0, 1, 0, 0, 0, 0, 0, 0 },
-                         { 0, 0, 1, 0, 0, 0, 0, 0 },
-                         { 0, 0, 0, 1, 0, 0, 0, 0 },
-                         { 0, 0, 0, 0, 1, 0, 0, 0 },
-                         { 0, 0, 0, 0, 0, 1, 0, 0 } };
+int rowControl[6][6] = { { 1, 0, 0, 0, 0, 0 },
+                         { 0, 1, 0, 0, 0, 0 },
+                         { 0, 0, 1, 0, 0, 0 },
+                         { 0, 0, 0, 1, 0, 0 },
+                         { 0, 0, 0, 0, 1, 0 },
+                         { 0, 0, 0, 0, 0, 1 } };
 
+//note, matrix leds are wired ground, while the rows are wired power, so if image[r][c] == 1, we actually do off
 int image[6][8] = { { 0, 0, 1, 0, 0, 1, 0, 0 },
                     { 0, 0, 1, 0, 0, 1, 0, 0 },
                     { 0, 0, 1, 0, 0, 1, 0, 0 },
@@ -44,8 +45,8 @@ void loop() {
 
 void displayImage(){
   for (int r = 0; r <= numOfRows; r++) {
-    //controls the rows
-    for (int c = 0; c <= numOfRows; c++) {
+    //controls the rows of matrix
+    for (int c = 0; c <= 6; c++) {
       digitalWrite(latchPin2, LOW);
       if (rowControl[r][c] == 1) {
         shiftOut(dataPin2, clockPin2, MSBFIRST, on);
@@ -54,7 +55,7 @@ void displayImage(){
       }
       digitalWrite(latchPin2, HIGH);
     }
-    //controls the cols
+    //controls the cols of matrix
     for (int c = 0; c <= numOfCols; c++) {
       digitalWrite(latchPin, LOW);
       if (image[r][c] == 1) {
@@ -71,12 +72,13 @@ void displayImage(){
 
 void clear(){
   for (int r = 0; r <= numOfRows; r++) {
-    //controls the rows
-    for (int c = 0; c <= numOfRows; c++) {
+    //controls the rows of matrix
+    for (int c = 0; c <= 6; c++) {
       digitalWrite(latchPin2, LOW);
       shiftOut(dataPin2, clockPin2, MSBFIRST, off);
       digitalWrite(latchPin2, HIGH);
     }
+    //controls the cols of matrix
     for (int c = 0; c <= numOfCols; c++) {
       digitalWrite(latchPin, LOW);
       shiftOut(dataPin, clockPin, MSBFIRST, on);
