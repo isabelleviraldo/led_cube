@@ -22,6 +22,7 @@ int rowControl[6][6] = { { 1, 0, 0, 0, 0, 0 },
                          { 0, 0, 0, 0, 0, 1 } };
 
 //note, matrix leds are wired ground, while the rows are wired power, so if image[r][c] == 1, we actually do off
+//edit after edit, i think above is actually incorrect, its been a minute, so test to double check ig
 int image[6][8] = { { 0, 0, 1, 0, 0, 1, 0, 0 },
                     { 0, 0, 1, 0, 0, 1, 0, 0 },
                     { 0, 0, 1, 0, 0, 1, 0, 0 },
